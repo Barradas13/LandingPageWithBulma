@@ -1,699 +1,469 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Science - Bulma Edition</title>
+    <title>Data Science</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
+
     <style>
-        :root {
-            --primary-color: #485fc7;
-            --secondary-color: #3e8ed0;
-            --accent-color: #00d1b2;
+        /* Estilos customizados para o carrossel */
+        .carousel {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin: 0 auto;
         }
         
-        body {
-            background-color: #f5f5f5;
-            min-height: 100vh;
+        .carousel-container {
             display: flex;
-            flex-direction: column;
-        }
-        
-        .hero.is-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        }
-        
-        .section {
-            flex: 1;
-        }
-        
-        .card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        
-        .modal-content {
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .footer {
-            background-color: #363636;
-            color: white;
-            padding: 2rem 1.5rem;
-        }
-        
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .algorithm-item, .tool-item {
-            cursor: pointer;
-            padding: 0.75rem;
-            border-radius: 6px;
-            transition: background-color 0.2s;
-        }
-        
-        .algorithm-item:hover, .tool-item:hover {
-            background-color: #f0f0f0;
+            transition: transform 0.5s ease;
+            width: 100%;
         }
         
         .carousel-item {
-            display: none;
+            min-width: 100%;
+            padding: 0 10px;
+            box-sizing: border-box;
+            flex-shrink: 0;
             opacity: 0;
-            transition: opacity 0.5s;
+            transition: opacity 0.5s ease;
         }
         
         .carousel-item.is-active {
-            display: block;
             opacity: 1;
         }
         
-        .carousel-image {
-            height: 200px;
-            object-fit: cover;
-            border-top-left-radius: 6px;
-            border-top-right-radius: 6px;
-        }
-        
-        .icon-box {
-            display: inline-flex;
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            width: 36px;
-            height: 36px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
-            margin-right: 10px;
-            color: white;
+        }
+        
+        .carousel-nav:hover {
+            background: rgba(0,0,0,0.8);
+        }
+        
+        .carousel-nav-prev {
+            left: 10px;
+        }
+        
+        .carousel-nav-next {
+            right: 10px;
+        }
+        
+        .carousel .card {
+            height: 100%;
+            margin: 0;
         }
     </style>
+
 </head>
+
 <body>
-    <!-- Navbar -->
-    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
-                <a class="navbar-item" href="#">
-                    <strong>DataScience</strong>
-                </a>
+                <a class="navbar-item" href="#">DataScience</a>
                 
-                <a id="navbarBurger" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasic">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                 </a>
             </div>
             
-            <div id="navbarMenu" class="navbar-menu">
+            <div id="navbarBasic" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item is-active" href="#home">Home</a>
+                    <a class="navbar-item" href="#home">Home</a>
                     <a class="navbar-item" href="#cursos">Nossos Cursos</a>
                     <a class="navbar-item" href="#tecnicas">Técnicas</a>
-                    <a class="navbar-item" href="#ferramentas">Ferramentas</a>
+                    <a class="navbar-item" href="#tecnicas">Ferramentas</a>
                     <a class="navbar-item" href="#oportunidades">Oportunidades</a>
                 </div>
             </div>
         </div>
     </nav>
-    
-    <!-- Seção Home -->
-    <section id="home" class="section">
-        <div class="container">
-            <div class="columns is-centered">
-                <div class="column is-8 has-text-centered">
-                    <h1 class="title is-1">Bem-vindo à Ciência de Dados</h1>
-                    <p class="subtitle is-4">
-                        Transforme dados em insights valiosos e impulsione sua carreira
-                    </p>
-                    
-                    <button id="discoverBtn" class="button is-primary is-medium mt-5">
-                        <span class="icon">
-                            <i class="fas fa-lightbulb"></i>
-                        </span>
-                        <span>Descubra o básico</span>
-                    </button>
-                    
-                    <div id="overviewModal" class="modal">
-                        <div class="modal-background"></div>
-                        <div class="modal-content">
-                            <div class="box">
-                                <h2 class="title is-4">Ciência de dados overview</h2>
-                                <p>
-                                    A Ciência de Dados é a ponte entre informações e insights estratégicos. Utilizando técnicas avançadas de estatística, programação e inteligência artificial, ela revela padrões ocultos, antecipa tendências e potencializa a tomada de decisões com base em dados concretos. 
-                                </p>
-                                <p class="mt-3">
-                                    Seja para otimizar processos, entender o comportamento do cliente ou impulsionar os resultados do seu negócio, a Ciência de Dados é a chave para inovar com inteligência. Descubra como os dados podem trabalhar a favor do seu futuro.
-                                </p>
-                                <button class="button is-primary is-small mt-4 modal-close">Fechar</button>
-                            </div>
-                        </div>
-                    </div>
+
+    <div class="container p-5">
+        <div class="columns" id="home">
+            <div class="column">
+                <h1 class="title is-1">Bem vindo à uma breve descrição sobre Ciência de Dados!</h1>
+            </div>
+        </div>
+        
+        <button class="button is-primary" id="offcanvasButton">Descubra o básico</button>
+
+        <div class="modal" id="offcanvasTop">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Ciência de dados overview</p>
+                    <button class="delete" aria-label="close" id="closeOffcanvas"></button>
+                </header>
+                <section class="modal-card-body">
+                    A Ciência de Dados é a ponte entre informações e insights estratégicos. Utilizando técnicas avançadas de
+                    estatística, programação e inteligência artificial, ela revela padrões ocultos, antecipa tendências e
+                    potencializa a tomada de decisões com base em dados concretos. Seja para otimizar processos, entender o
+                    comportamento do cliente ou impulsionar os resultados do seu negócio, a Ciência de Dados é a chave para
+                    inovar com inteligência. Descubra como os dados podem trabalhar a favor do seu futuro.
+                </section>
+            </div>
+        </div>
+        <br><br>
+
+        <h2 class="title is-2">Nossos cursos</h2>
+        <div class="card" style="width: 18rem;" id="cursos">
+            <header class="card-header">
+                <p class="card-header-title">Cursos oferecidos</p>
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    <ul>
+                        <li> Introdução à Ciência de Dados <i class="fas fa-database"></i> </li>
+                        <li>Python para Ciência de Dados <i class="fas fa-hdd"></i> </li>
+                        <li>Estatística Aplicada para Ciência de Dados <i class="fas fa-sliders-h"></i></li>
+                        <li>Machine Learning na Prática <i class="fas fa-project-diagram"></i></li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </section>
-    
-    <!-- Seção Cursos -->
-    <section id="cursos" class="section has-background-light">
-        <div class="container">
-            <h2 class="title is-2 has-text-centered mb-6">Nossos cursos</h2>
-            
-            <div class="columns is-multiline is-centered">
-                <div class="column is-3">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="media">
-                                <div class="media-left">
-                                    <div class="icon-box">
-                                        <i class="fas fa-database"></i>
-                                    </div>
-                                </div>
-                                <div class="media-content">
-                                    <p class="title is-5">Introdução à Ciência de Dados</p>
-                                </div>
-                            </div>
-                            <div class="content">
-                                Fundamentos de análise de dados, estatística e visualização para iniciantes.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="column is-3">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="media">
-                                <div class="media-left">
-                                    <div class="icon-box">
-                                        <i class="fab fa-python"></i>
-                                    </div>
-                                </div>
-                                <div class="media-content">
-                                    <p class="title is-5">Python para Ciência de Dados</p>
-                                </div>
-                            </div>
-                            <div class="content">
-                                Pandas, NumPy, Matplotlib e Scikit-learn para análise e modelagem de dados.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="column is-3">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="media">
-                                <div class="media-left">
-                                    <div class="icon-box">
-                                        <i class="fas fa-chart-line"></i>
-                                    </div>
-                                </div>
-                                <div class="media-content">
-                                    <p class="title is-5">Estatística Aplicada</p>
-                                </div>
-                            </div>
-                            <div class="content">
-                                Técnicas estatísticas aplicadas a problemas reais de ciência de dados.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="column is-3">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="media">
-                                <div class="media-left">
-                                    <div class="icon-box">
-                                        <i class="fas fa-brain"></i>
-                                    </div>
-                                </div>
-                                <div class="media-content">
-                                    <p class="title is-5">Machine Learning</p>
-                                </div>
-                            </div>
-                            <div class="content">
-                                Algoritmos de aprendizado de máquina para classificação, regressão e clustering.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section id="tecnicas" class="section">
-        <div class="container">
-            <h2 class="title is-2 has-text-centered mb-6">Tecnologias e Algoritmos</h2>
-            
-            <div class="tech-grid">
-                <div class="card">
-                    <div class="card-header">
+        <br>
+
+        <h2 class="title is-2">Tecnologias e Algoritmos</h2>
+        <div class="columns" id="tecnicas">
+            <div class="column is-half">
+                <div class="card" style="width: 18rem;">
+                    <header class="card-header">
                         <p class="card-header-title">Algoritmos</p>
-                    </div>
+                    </header>
                     <div class="card-content">
-                        <div class="algorithm-item" data-target="MiniBatchKMeans">
-                            <div class="icon-text">
-                                <span class="icon has-text-primary">
-                                    <i class="fas fa-project-diagram"></i>
-                                </span>
-                                <span>MiniBatchKMeans / KMeans</span>
-                            </div>
-                        </div>
-                        
-                        <div class="algorithm-item" data-target="AffinityPropagation">
-                            <div class="icon-text">
-                                <span class="icon has-text-primary">
-                                    <i class="fas fa-network-wired"></i>
-                                </span>
-                                <span>Affinity Propagation</span>
-                            </div>
-                        </div>
-                        
-                        <div class="algorithm-item" data-target="MeanShift">
-                            <div class="icon-text">
-                                <span class="icon has-text-primary">
-                                    <i class="fas fa-sliders-h"></i>
-                                </span>
-                                <span>MeanShift</span>
-                            </div>
-                        </div>
-                        
-                        <div class="algorithm-item" data-target="SpectralClustering">
-                            <div class="icon-text">
-                                <span class="icon has-text-primary">
-                                    <i class="fas fa-wave-square"></i>
-                                </span>
-                                <span>Spectral Clustering</span>
-                            </div>
-                        </div>
-                        
-                        <div class="algorithm-item" data-target="WardClustering">
-                            <div class="icon-text">
-                                <span class="icon has-text-primary">
-                                    <i class="fas fa-sitemap"></i>
-                                </span>
-                                <span>Ward / Agglomerative Clustering</span>
-                            </div>
-                        </div>
-                        
-                        <div class="algorithm-item" data-target="DBSCAN">
-                            <div class="icon-text">
-                                <span class="icon has-text-primary">
-                                    <i class="fas fa-dot-circle"></i>
-                                </span>
-                                <span>DBSCAN</span>
-                            </div>
-                        </div>
-                        
-                        <div class="algorithm-item" data-target="Birch">
-                            <div class="icon-text">
-                                <span class="icon has-text-primary">
-                                    <i class="fas fa-tree"></i>
-                                </span>
-                                <span>Birch</span>
-                            </div>
-                        </div>
-                        
-                        <div class="algorithm-item" data-target="GaussianMixture">
-                            <div class="icon-text">
-                                <span class="icon has-text-primary">
-                                    <i class="fas fa-chart-area"></i>
-                                </span>
-                                <span>Gaussian Mixture</span>
-                            </div>
+                        <div class="content">
+                            <ul>
+                                <li><a class="modal-button" data-target="#MiniBatchKMeansModal">MiniBatchKMeans / KMeans</a></li>
+                                <li><a class="modal-button" data-target="#AffinityPropagationModal">Affinity Propagation</a></li>
+                                <li><a class="modal-button" data-target="#MeanShiftModal">MeanShift</a></li>
+                                <li><a class="modal-button" data-target="#SpectralClusteringModal">Spectral Clustering</a></li>
+                                <li><a class="modal-button" data-target="#WardClusteringModal">Ward / Agglomerative Clustering</a></li>
+                                <li><a class="modal-button" data-target="#DBSCANModal">DBSCAN</a></li>
+                                <li><a class="modal-button" data-target="#BirchModal">Birch</a></li>
+                                <li><a class="modal-button" data-target="#GaussianMixtureModal">Gaussian Mixture</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                
-                <div class="card" id="ferramentas">
-                    <div class="card-header">
+            </div>
+
+            <div class="column is-half">
+                <div class="card" style="width: 18rem;">
+                    <header class="card-header">
                         <p class="card-header-title">Ferramentas</p>
-                    </div>
+                    </header>
                     <div class="card-content">
-                        <div class="tool-item" data-target="Linguagens">
-                            <div class="icon-text">
-                                <span class="icon has-text-info">
-                                    <i class="fas fa-code"></i>
-                                </span>
-                                <span>Linguagens de Programação</span>
-                            </div>
-                        </div>
-                        
-                        <div class="tool-item" data-target="Bibliotecas">
-                            <div class="icon-text">
-                                <span class="icon has-text-info">
-                                    <i class="fas fa-book"></i>
-                                </span>
-                                <span>Bibliotecas e Frameworks</span>
-                            </div>
-                        </div>
-                        
-                        <div class="tool-item" data-target="BancosDeDados">
-                            <div class="icon-text">
-                                <span class="icon has-text-info">
-                                    <i class="fas fa-database"></i>
-                                </span>
-                                <span>Bancos de Dados</span>
-                            </div>
-                        </div>
-                        
-                        <div class="tool-item" data-target="Nuvem">
-                            <div class="icon-text">
-                                <span class="icon has-text-info">
-                                    <i class="fas fa-cloud"></i>
-                                </span>
-                                <span>Plataformas em Nuvem</span>
-                            </div>
-                        </div>
-                        
-                        <div class="tool-item" data-target="Visualizacao">
-                            <div class="icon-text">
-                                <span class="icon has-text-info">
-                                    <i class="fas fa-chart-bar"></i>
-                                </span>
-                                <span>Ferramentas de Visualização</span>
-                            </div>
-                        </div>
-                        
-                        <div class="tool-item" data-target="Notebooks">
-                            <div class="icon-text">
-                                <span class="icon has-text-info">
-                                    <i class="fas fa-laptop-code"></i>
-                                </span>
-                                <span>Ambientes e Notebooks</span>
-                            </div>
-                        </div>
-                        
-                        <div class="tool-item" data-target="MLOps">
-                            <div class="icon-text">
-                                <span class="icon has-text-info">
-                                    <i class="fas fa-rocket"></i>
-                                </span>
-                                <span>Ferramentas de Deploy e MLOps</span>
-                            </div>
+                        <div class="content">
+                            <ul>
+                                <li><a class="modal-button" data-target="#LinguagensModal">Linguagens de Programação</a></li>
+                                <li><a class="modal-button" data-target="#BibliotecasModal">Bibliotecas e Frameworks</a></li>
+                                <li><a class="modal-button" data-target="#BancosDeDadosModal">Bancos de Dados</a></li>
+                                <li><a class="modal-button" data-target="#NuvemModal">Plataformas em Nuvem</a></li>
+                                <li><a class="modal-button" data-target="#VisualizacaoModal">Ferramentas de Visualização</a></li>
+                                <li><a class="modal-button" data-target="#NotebooksModal">Ambientes e Notebooks</a></li>
+                                <li><a class="modal-button" data-target="#MLOpsModal">Ferramentas de Deploy e MLOps</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    
-    <!--AQ COMEÇA OS DISPLAY DE ALGORITMOS-->
+        <!-- Modals para Algoritmos -->
+        <div class="modal" id="MiniBatchKMeansModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">MiniBatchKMeans / KMeans</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Divide os dados em grupos baseando-se na média (centroide) de cada cluster.
+                    Funciona bem com dados distribuídos em formas circulares, mas tem dificuldade com formatos mais
+                    complexos.
+                </section>
+            </div>
+        </div>
 
-    <div id="algorithmModals">
-        <div id="MiniBatchKMeans" class="modal">
+        <div class="modal" id="AffinityPropagationModal">
             <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">MiniBatchKMeans / KMeans</h3>
-                    <p>
-                        Divide os dados em grupos baseando-se na média (centroide) de cada cluster. Funciona bem com dados distribuídos em formas circulares, mas tem dificuldade com formatos mais complexos.
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Affinity Propagation</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Forma clusters com base na similaridade entre os pontos. Funciona sem
+                    precisar definir o número de grupos antes, mas pode ser mais lento e sensível à distribuição dos
+                    dados.
+                </section>
             </div>
         </div>
-        
-        <div id="AffinityPropagation" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">Affinity Propagation</h3>
-                    <p>
-                        Forma clusters com base na similaridade entre os pontos. Funciona sem precisar definir o número de grupos antes, mas pode ser mais lento e sensível à distribuição dos dados.
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="MeanShift" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">MeanShift</h3>
-                    <p>
-                        Procura áreas de alta densidade para agrupar os dados. É eficiente em descobrir a quantidade ideal de clusters, mas tem desempenho limitado em grandes volumes.
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="SpectralClustering" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">Spectral Clustering</h3>
-                    <p>
-                        Usa técnicas de álgebra linear para agrupar dados com formas não convencionais (como espirais ou luas). Excelente para padrões complexos, mas consome mais recursos computacionais.
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="WardClustering" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">Ward / Agglomerative Clustering</h3>
-                    <p>
-                        Métodos hierárquicos que começam agrupando pontos próximos e vão unindo os grupos até formar a estrutura final. Bons para estruturas ramificadas ou hierárquicas.
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="DBSCAN" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">DBSCAN</h3>
-                    <p>
-                        Foca em densidade de pontos: identifica regiões densas como clusters e ignora ruídos. Ideal para formatos irregulares e quando há "pontos fora da curva".
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="Birch" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">Birch</h3>
-                    <p>
-                        Projetado para grandes bases de dados. Cria uma estrutura hierárquica leve e depois aplica clustering sobre ela. Rápido e escalável.
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="GaussianMixture" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">Gaussian Mixture</h3>
-                    <p>
-                        Assume que os dados vêm de distribuições gaussianas (curvas em forma de sino) e calcula a probabilidade de cada ponto pertencer a cada grupo. Mais flexível que o KMeans.
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="Linguagens" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">Linguagens de Programação</h3>
-                    <p>
-                        Cursos voltados a linguagens como Python, R, Java e outras, fundamentais para desenvolvimento de algoritmos e sistemas inteligentes.
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="Bibliotecas" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">Bibliotecas e Frameworks</h3>
-                    <p>
-                        Estudo de ferramentas como Scikit-learn, TensorFlow, PyTorch e outras, usadas na construção de modelos e soluções de machine learning.
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="BancosDeDados" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">Bancos de Dados</h3>
-                    <p>
-                        Cursos sobre armazenamento, consulta e gerenciamento de dados em bancos relacionais (SQL) e não-relacionais (NoSQL).
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="Nuvem" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">Plataformas em Nuvem</h3>
-                    <p>
-                        Capacitação no uso de plataformas como AWS, Azure e Google Cloud para processamento, armazenamento e implantação de modelos na nuvem.
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="Visualizacao" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">Ferramentas de Visualização</h3>
-                    <p>
-                        Uso de bibliotecas e plataformas como Matplotlib, Seaborn e Power BI para análise gráfica e apresentação de dados.
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="Notebooks" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">Ambientes e Notebooks</h3>
-                    <p>
-                        Exploração de ambientes como Jupyter, Google Colab e VSCode para desenvolvimento interativo e colaborativo em ciência de dados.
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <div id="MLOps" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <h3 class="title is-4">Ferramentas de Deploy e MLOps</h3>
-                    <p>
-                        Ferramentas e práticas para operacionalizar modelos de machine learning com CI/CD, monitoramento, versionamento e escalabilidade.
-                    </p>
-                    <button class="button is-small is-primary mt-3 modal-close">Fechar</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
+        <div class="modal" id="MeanShiftModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">MeanShift</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Procura áreas de alta densidade para agrupar os dados. É eficiente em
+                    descobrir a quantidade ideal de clusters, mas tem desempenho limitado em grandes volumes.
+                </section>
+            </div>
+        </div>
 
-    <!--AQ TERMINA OS DISPLAY DE ALGORITMOS-->
+        <div class="modal" id="SpectralClusteringModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Spectral Clustering</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Usa técnicas de álgebra linear para agrupar dados com formas não
+                    convencionais (como espirais ou luas). Excelente para padrões complexos, mas consome mais
+                    recursos computacionais.
+                </section>
+            </div>
+        </div>
 
+        <div class="modal" id="WardClusteringModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Ward / Agglomerative Clustering</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Métodos hierárquicos que começam agrupando pontos próximos e vão unindo os
+                    grupos até formar a estrutura final. Bons para estruturas ramificadas ou hierárquicas.
+                </section>
+            </div>
+        </div>
 
-    
-    <!-- Seção Oportunidades -->
-    <section id="oportunidades" class="section has-background-light">
-        <div class="container">
-            <h2 class="title is-2 has-text-centered mb-6">Oportunidades de emprego</h2>
-            
-            <div class="carousel-container">
-                <div class="carousel-item is-active">
-                    <div class="card">
-                        <div class="card-image">
-                            <figure class="image is-4by3">
-                                <img class="carousel-image" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Glassdoor">
-                            </figure>
-                        </div>
-                        <div class="card-content">
-                            <div class="media">
-                                <div class="media-content">
-                                    <p class="title is-4">Glassdoor</p>
+        <div class="modal" id="DBSCANModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">DBSCAN</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Foca em densidade de pontos: identifica regiões densas como clusters e
+                    ignora ruídos. Ideal para formatos irregulares e quando há "pontos fora da curva".
+                </section>
+            </div>
+        </div>
+
+        <div class="modal" id="BirchModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Birch</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Projetado para grandes bases de dados. Cria uma estrutura hierárquica leve e
+                    depois aplica clustering sobre ela. Rápido e escalável.
+                </section>
+            </div>
+        </div>
+
+        <div class="modal" id="GaussianMixtureModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Gaussian Mixture</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Assume que os dados vêm de distribuições gaussianas (curvas em forma de
+                    sino) e calcula a probabilidade de cada ponto pertencer a cada grupo. Mais flexível que o
+                    KMeans.
+                </section>
+            </div>
+        </div>
+
+        <!-- Modals para Ferramentas -->
+        <div class="modal" id="LinguagensModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Linguagens de Programação</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Cursos voltados a linguagens como Python, R, Java e outras, fundamentais
+                    para desenvolvimento de algoritmos e sistemas inteligentes.
+                </section>
+            </div>
+        </div>
+
+        <div class="modal" id="BibliotecasModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Bibliotecas e Frameworks</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Estudo de ferramentas como Scikit-learn, TensorFlow, PyTorch e outras,
+                    usadas na construção de modelos e soluções de machine learning.
+                </section>
+            </div>
+        </div>
+
+        <div class="modal" id="BancosDeDadosModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Bancos de Dados</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Cursos sobre armazenamento, consulta e gerenciamento de dados em bancos
+                    relacionais (SQL) e não-relacionais (NoSQL).
+                </section>
+            </div>
+        </div>
+
+        <div class="modal" id="NuvemModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Plataformas em Nuvem</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Capacitação no uso de plataformas como AWS, Azure e Google Cloud para
+                    processamento, armazenamento e implantação de modelos na nuvem.
+                </section>
+            </div>
+        </div>
+
+        <div class="modal" id="VisualizacaoModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Ferramentas de Visualização</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Uso de bibliotecas e plataformas como Matplotlib, Seaborn e Power BI para
+                    análise gráfica e apresentação de dados.
+                </section>
+            </div>
+        </div>
+
+        <div class="modal" id="NotebooksModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Ambientes e Notebooks</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Exploração de ambientes como Jupyter, Google Colab e VSCode para
+                    desenvolvimento interativo e colaborativo em ciência de dados.
+                </section>
+            </div>
+        </div>
+
+        <div class="modal" id="MLOpsModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Ferramentas de Deploy e MLOps</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    Ferramentas e práticas para operacionalizar modelos de machine learning com
+                    CI/CD, monitoramento, versionamento e escalabilidade.
+                </section>
+            </div>
+        </div>
+
+        <br>
+        <h2 class="title is-2">Oportunidades de emprego</h2>
+        <div class="columns" id="oportunidades">
+            <div class="column">
+                <div class="carousel">
+                    <div class="carousel-container">
+                        <div class="carousel-item is-active">
+                            <div class="card">
+                                <div class="card-image">
+                                    <figure class="image is-4by3">
+                                        <img src="img/glassdoor.webp" alt="Glassdoor">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <h5 class="title is-5">Glassdoor</h5>
+                                        <p>Motor de busca de empregos com muitas oportunidades em dados.</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="content">
-                                Motor de busca de empregos com muitas oportunidades em dados.
-                            </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="carousel-item">
-                    <div class="card">
-                        <div class="card-image">
-                            <figure class="image is-4by3">
-                                <img class="carousel-image" src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Indeed">
-                            </figure>
-                        </div>
-                        <div class="card-content">
-                            <div class="media">
-                                <div class="media-content">
-                                    <p class="title is-4">Indeed</p>
+                        <div class="carousel-item">
+                            <div class="card">
+                                <div class="card-image">
+                                    <figure class="image is-4by3">
+                                        <img src="img/indeed.png" alt="Indeed">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <h5 class="title is-5">Indeed</h5>
+                                        <p>Focado em vagas remotas no Brasil, incluindo Ciência de Dados e tecnologia.</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="content">
-                                Focado em vagas remotas no Brasil, incluindo Ciência de Dados e tecnologia.
-                            </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="carousel-item">
-                    <div class="card">
-                        <div class="card-image">
-                            <figure class="image is-4by3">
-                                <img class="carousel-image" src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="LinkedIn">
-                            </figure>
-                        </div>
-                        <div class="card-content">
-                            <div class="media">
-                                <div class="media-content">
-                                    <p class="title is-4">LinkedIn</p>
+                        <div class="carousel-item">
+                            <div class="card">
+                                <div class="card-image">
+                                    <figure class="image is-4by3">
+                                        <img src="img/linkedim.jpg" alt="LinkedIn">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <h5 class="title is-5">LinkedIn</h5>
+                                        <p>Rede profissional com diversas oportunidades em Ciência de Dados.</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="content">
-                                Rede profissional com ampla variedade de oportunidades para cientistas de dados.
-                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="level mt-5">
-                <div class="level-left">
-                    <button id="prevBtn" class="button is-primary">
+                    <button class="carousel-nav carousel-nav-prev">
                         <span class="icon">
                             <i class="fas fa-chevron-left"></i>
                         </span>
-                        <span>Anterior</span>
                     </button>
-                </div>
-                
-                <div class="level-right">
-                    <button id="nextBtn" class="button is-primary">
-                        <span>Próximo</span>
+                    <button class="carousel-nav carousel-nav-next">
                         <span class="icon">
                             <i class="fas fa-chevron-right"></i>
                         </span>
@@ -701,121 +471,151 @@
                 </div>
             </div>
         </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="content has-text-centered">
-            <div class="buttons is-centered">
-                <a href="https://github.com/Barradas13" class="button is-light">
-                    <span class="icon">
-                        <i class="fab fa-github"></i>
-                    </span>
-                    <span>GitHub</span>
-                </a>
-                <a href="https://br.linkedin.com/in/fbsebastiao" class="button is-light">
-                    <span class="icon">
-                        <i class="fab fa-linkedin"></i>
-                    </span>
-                    <span>LinkedIn</span>
-                </a>
-            </div>
-            <p class="mt-4">
-                &copy; 2025 Barradas. Todos os direitos reservados.
-            </p>
-        </div>
-    </footer>
-    
+    </div>
+    <br>
+
+
     <script>
-        // Navbar Burger
         document.addEventListener('DOMContentLoaded', () => {
-            const navbarBurger = document.getElementById('navbarBurger');
-            const navbarMenu = document.getElementById('navbarMenu');
+            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
             
-            if (navbarBurger) {
-                navbarBurger.addEventListener('click', () => {
-                    navbarBurger.classList.toggle('is-active');
-                    navbarMenu.classList.toggle('is-active');
-                });
-            }
-            
-            // Smooth scrolling for navbar links
-            document.querySelectorAll('.navbar-item').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
+            if ($navbarBurgers.length > 0) {
+                $navbarBurgers.forEach(el => {
+                    el.addEventListener('click', () => {
+                        const target = el.dataset.target;
+                        const $target = document.getElementById(target);
                         
-                        // Close mobile menu if open
-                        navbarBurger.classList.remove('is-active');
-                        navbarMenu.classList.remove('is-active');
-                    }
-                });
-            });
-            
-            // Overview modal
-            const overviewModal = document.getElementById('overviewModal');
-            const discoverBtn = document.getElementById('discoverBtn');
-            
-            if (discoverBtn) {
-                discoverBtn.addEventListener('click', () => {
-                    overviewModal.classList.add('is-active');
+                        el.classList.toggle('is-active');
+                        $target.classList.toggle('is-active');
+                    });
                 });
             }
             
-            // Modal close functionality
-            document.querySelectorAll('.modal-close, .modal-background').forEach(element => {
-                element.addEventListener('click', () => {
-                    document.querySelectorAll('.modal').forEach(modal => {
+            // Offcanvas functionality
+            const offcanvasButton = document.getElementById('offcanvasButton');
+            const offcanvas = document.getElementById('offcanvasTop');
+            const closeOffcanvas = document.getElementById('closeOffcanvas');
+            
+            if (offcanvasButton && offcanvas && closeOffcanvas) {
+                offcanvasButton.addEventListener('click', () => {
+                    offcanvas.classList.add('is-active');
+                });
+                
+                closeOffcanvas.addEventListener('click', () => {
+                    offcanvas.classList.remove('is-active');
+                });
+            }
+            
+            // Modal functionality
+            const modalButtons = document.querySelectorAll('.modal-button');
+            
+            modalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const target = button.getAttribute('data-target');
+                    const modal = document.getElementById(target);
+                    modal.classList.add('is-active');
+                    
+                    // Add event listener to close button
+                    const closeButton = modal.querySelector('.delete');
+                    closeButton.addEventListener('click', () => {
+                        modal.classList.remove('is-active');
+                    });
+                    
+                    // Close when clicking on background
+                    modal.querySelector('.modal-background').addEventListener('click', () => {
                         modal.classList.remove('is-active');
                     });
                 });
             });
             
-            // Algorithm and tool modals
-            document.querySelectorAll('.algorithm-item, .tool-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const target = item.getAttribute('data-target');
-                    const modal = document.getElementById(target);
-                    
-                    if (modal) {
-                        modal.classList.add('is-active');
-                    }
-                });
-            });
-            
             // Carousel functionality
-            const carouselItems = document.querySelectorAll('.carousel-item');
-            let currentIndex = 0;
-            
-            function showSlide(index) {
-                carouselItems.forEach(item => item.classList.remove('is-active'));
-                carouselItems[index].classList.add('is-active');
+            const carousel = document.querySelector('.carousel');
+            if (carousel) {
+                const container = carousel.querySelector('.carousel-container');
+                const items = carousel.querySelectorAll('.carousel-item');
+                const prevBtn = carousel.querySelector('.carousel-nav-prev');
+                const nextBtn = carousel.querySelector('.carousel-nav-next');
+                
+                let currentIndex = 0;
+                const itemCount = items.length;
+                
+                function updateCarousel() {
+                    const offset = -currentIndex * 100;
+                    container.style.transform = `translateX(${offset}%)`;
+                    
+                    // Update active class
+                    items.forEach((item, index) => {
+                        item.classList.toggle('is-active', index === currentIndex);
+                    });
+                }
+                
+                function nextSlide() {
+                    currentIndex = (currentIndex + 1) % itemCount;
+                    updateCarousel();
+                }
+                
+                function prevSlide() {
+                    currentIndex = (currentIndex - 1 + itemCount) % itemCount;
+                    updateCarousel();
+                }
+                
+                // Event listeners
+                nextBtn.addEventListener('click', nextSlide);
+                prevBtn.addEventListener('click', prevSlide);
+                
+                // Optional: Auto-advance slides
+                // setInterval(nextSlide, 5000);
+                
+                // Initialize
+                updateCarousel();
             }
-            
-            document.getElementById('prevBtn').addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
-                showSlide(currentIndex);
-            });
-            
-            document.getElementById('nextBtn').addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % carouselItems.length;
-                showSlide(currentIndex);
-            });
-            
-            // Auto-advance carousel
-            setInterval(() => {
-                currentIndex = (currentIndex + 1) % carouselItems.length;
-                showSlide(currentIndex);
-            }, 5000);
+        }
+    
+        
+    
+    
+    );
+
+    document.addEventListener('DOMContentLoaded', () => {
+    // Função para fechar todos os modais
+    function closeAllModals() {
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.classList.remove('is-active');
         });
+    }
+
+    // Adiciona event listeners para todos os botões de modal
+    document.querySelectorAll('.modal-button').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = button.getAttribute('data-target');
+            const modal = document.querySelector(target);
+            
+            if (modal) {
+                closeAllModals();
+                modal.classList.add('is-active');
+            }
+        });
+    });
+
+    // Adiciona event listeners para fechar modais
+    document.querySelectorAll('.modal .delete, .modal .modal-background').forEach(element => {
+        element.addEventListener('click', () => {
+            closeAllModals();
+        });
+    });
+
+    // Fecha modais quando a tecla ESC é pressionada
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeAllModals();
+        }
+    });
+
+    // Restante do seu código (navbar, carousel, etc.)...
+    // [Mantenha o restante do seu código JavaScript existente aqui]
+});
+
     </script>
 </body>
 </html>
